@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+/// <summary>
+/// Simple drag and drop script for gameobjects
+/// </summary>
 public class DraqAndDrop : MonoBehaviour
 {
 
@@ -21,7 +23,6 @@ public class DraqAndDrop : MonoBehaviour
     {
         _originalPosition = transform.position;
         _dragOffset = transform.position - GetMousePosition();
-        Debug.Log("OnMouseDown");
     }
 
     private void OnMouseUp()
@@ -36,7 +37,6 @@ public class DraqAndDrop : MonoBehaviour
             transform.position = _originalPosition;
         }
 
-        Debug.Log(_isSnapped);
     }
 
     private void OnMouseDrag()
@@ -51,18 +51,18 @@ public class DraqAndDrop : MonoBehaviour
         return mousePos;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log(this.gameObject.name + " colliding with " + collision.gameObject.name);
-        _isSnapped = true;
-        _snappedObject = collision.gameObject;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        _isSnapped = false;
-        _snappedObject = null;
-    }
+    // private void OnCollisionEnter2D(Collision2D collision)
+    // {
+    //     Debug.Log(this.gameObject.name + " colliding with " + collision.gameObject.name);
+    //     _isSnapped = true;
+    //     _snappedObject = collision.gameObject;
+    // }
+    //
+    // private void OnCollisionExit2D(Collision2D collision)
+    // {
+    //     _isSnapped = false;
+    //     _snappedObject = null;
+    // }
 
 
 
