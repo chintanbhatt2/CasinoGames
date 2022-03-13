@@ -15,15 +15,19 @@ public class CardController : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     public bool isFaceDown;
 
+    private int temporaryValue;
+
     public void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         data = new CardData(0, 0);
+        temporaryValue = 0;
     }
 
     public void SetCard(CardData cd)
     {
         data = cd;
+        temporaryValue = data.CardNumber;
         string fileName = "";
 
         switch (data.CardSuit)
@@ -98,12 +102,12 @@ public class CardController : MonoBehaviour
 
     public int CardValue()
     {
-        return data.CardNumber;
+        return temporaryValue;
     }
 
     public void UpdateCardValue(int newValue)
     {
-        data.CardNumber = newValue;
+        temporaryValue = newValue;
     }
 
 }
