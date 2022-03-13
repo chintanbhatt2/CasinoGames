@@ -21,7 +21,6 @@ public class PlayerController : Controller
         {
             return;
         }
-            
         else if (this.m_pointValue > 21)
         {
             foreach (GameObject card in m_Cards)

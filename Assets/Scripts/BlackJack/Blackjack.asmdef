@@ -2,7 +2,8 @@
     "name": "Blackjack",
     "rootNamespace": "",
     "references": [
-        "Core"
+        "Core",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

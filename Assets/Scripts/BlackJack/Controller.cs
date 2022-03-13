@@ -33,8 +33,11 @@ public class Controller : MonoBehaviour
             }
             m_Cards.Clear();
             m_pointValue = 0;
-            DrawCard();
-            DrawCard();
+            // Drawing cards until the count is 2, value is 1 since the while loop will then run twice
+            while (m_Cards.Count < 1)
+            {
+                DrawCard();
+            }
             if (this.m_pointValue == 21)
             {
                 BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
@@ -56,6 +59,7 @@ public class Controller : MonoBehaviour
         int value = m_Cards[m_Cards.Count - 1].gameObject.GetComponent<CardController>().CardValue();
         if (value > 10)
         {
+            m_Cards[m_Cards.Count - 1].gameObject.GetComponent<CardController>().UpdateCardValue(10);
             value = 10;
         }
 
@@ -75,18 +79,11 @@ public class Controller : MonoBehaviour
         foreach (GameObject card in m_Cards)
         {
             int value = card.GetComponent<CardController>().CardValue();
-            if (value > 10)
-            {
-                value = 10;
-            }
-
             finalValue += value;
         }
 
         m_pointValue = finalValue;
         Debug.Log("Current count: " + m_pointValue.ToString());
-
-
     }
 
     public int GetPointValue()

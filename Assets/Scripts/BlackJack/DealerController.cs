@@ -7,15 +7,15 @@ using UnityEngine;
 /// as well as a basic strategy for the dealer
 /// </summary>
 
-public class DealerController : Controller
+public class  DealerController : Controller
 {
-    protected void Awake()
+    protected new void Awake()
     {
         BJGameManager.OnGameStateChange += GameManagerStateChange;
         m_Cards.Clear();
     }
     
-    protected void GameManagerStateChange(BJGameManager.GameState state)
+    private new void GameManagerStateChange(BJGameManager.GameState state)
     {
         if (state == BJGameManager.GameState.Deal)
         {
