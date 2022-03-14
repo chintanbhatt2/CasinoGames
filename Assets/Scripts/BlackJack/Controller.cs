@@ -19,6 +19,7 @@ public class Controller : MonoBehaviour
 
     protected void OnDestroy()
     {
+        Debug.Log("Destroying " + this.name);
         BJGameManager.OnGameStateChange -= GameManagerStateChange;
     }
 
@@ -90,5 +91,6 @@ public class Controller : MonoBehaviour
     {
         return m_pointValue;
     }
+    
     
 }

@@ -1,83 +1,117 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
-public class Gamemanager : MonoBehaviour
+
+public class GameManager : MonoBehaviour
 {
-    public static Gamemanager Instance;
-    public GameState State;
-
-    public static event Action<GameState> OnGameStateChanged;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
-
-    private void Start()
-    {
-        UpdateGameState(GameState.Start);
-    }
-
-    private void Update()
-    {
-        
-    }
-
-
-    public void UpdateGameState(GameState newState)
-    {
-        State = newState;
-
-        switch (newState)
-        {
-            case GameState.Start:
-                HandleStart();
-                break;
-            case GameState.Bet:
-                HandleBet();
-                break;
-            case GameState.PlayerTurn:
-                HandlePlayerTurn();
-                break;
-            case GameState.GameOver:
-                HandleGameOver();
-                break;
-        }
-
-        OnGameStateChanged(newState);
-    }
-
-    private void HandleStart()
-    {
-
-    }
-
-    private void HandleBet()
-    {
-
-    }
-
-    private void HandlePlayerTurn()
-    {
-
-    }
-
-    private void HandleGameOver()
-    {
-
-    }
-
     public enum GameState
     {
         Start,
-        Bet,
-        PlayerTurn,
-        GameOver,
+        Play,
+        Win,
+        Lose,
+        End,
+    }
+
+    public static event Action<GameState> OnGameStateChange;
+
+    public static GameManager Instance;
+
+    private List<CardData> m_Cards = new List<CardData>();
+
+    public GameState State;
+
+    public int RoundCount;
+
+    public int MaximumRounds;
+
+    [SerializeField] private GameObject CardPrefab;
+
+
+    public void Awake()
+    {
+        Instance = this;
+        Assert.IsNotNull(CardPrefab);
+        Assert.IsTrue(MaximumRounds <= 13);
+        
+        GameManager.OnGameStateChange += StateChange;
+        CardData.Suit randomSuit = (CardData.Suit)(Random.Range(0, 3));
+        for (int i = 1; i <= 13; i++)
+        {
+            m_Cards.Add(new CardData(randomSuit, i));
+        }
+        SceneManager.LoadScene("Scenes/HighLow/HighLowUI", LoadSceneMode.Additive);
 
     }
 
+    public void Start()
+    {
+        RoundCount = 0;
+        Instance.UpdateGameState(GameState.Start);
+    }
 
+    private void StateChange(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.Lose:
+                HandleLoss();
+                break;
+            case GameState.Win:
+                HandleWin();
+                break;    
+        }
+    }
+
+    private void HandleLoss()
+    {
+        //Remove money from player's bank
+        Debug.Log("You lose!");
+        if (RoundCount >= MaximumRounds)
+        {
+            RoundCount = 0;
+            UpdateGameState(GameState.End);
+        }
+        else
+        {
+            UpdateGameState(GameState.Play);
+        }
+    }
+
+    private void HandleWin()
+    {
+        //Add money to player's bank
+        Debug.Log("You win!");
+
+        if (RoundCount >= MaximumRounds)
+        {
+            RoundCount = 0;
+            UpdateGameState(GameState.End);
+        }        
+        else
+        {
+            UpdateGameState(GameState.Play);
+        }    
+    }
+    
+    public void UpdateGameState(GameState state)
+    {
+        State = state;
+        OnGameStateChange?.Invoke(state);
+    }
+
+    public GameObject DrawRandomCardObject()
+    {
+        GameObject card = Instantiate(CardPrefab);
+        int random = Random.Range(0, m_Cards.Count - 1);
+        CardData drawnCard = m_Cards[random];
+        m_Cards.RemoveAt(random);
+        card.GetComponent<CardController>().SetCard(drawnCard);
+        return card;
+    }
+    
 }

@@ -20,7 +20,7 @@ public class BJGameManager : MonoBehaviour
     public int ShoeCount;
     private List<CardDeck> m_Decks = new List<CardDeck>();
     public GameState State;
-    [SerializeField] GameObject CardPrefab;
+    [SerializeField] private GameObject CardPrefab;
     public enum GameState
     {
         Start,
@@ -57,56 +57,15 @@ public class BJGameManager : MonoBehaviour
         State = newState;
         switch (newState)
         {
-            case GameState.Start:
-                HandleStart();
-                break;
-            case GameState.Bet:
-                HandleBet();
-                break;
-            case GameState.Deal:
-                HandleDeal();
-                break;
-            case GameState.PlayerTurn:
-                HandlePlayerTurn();
-                break;
-            case GameState.DealerTurn:
-                HandleDealerTurn();
-                break;
             case GameState.Lose:
                 HandleLose();
                 break;
             case GameState.Win:
                 HandleWin();
                 break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
 
         OnGameStateChange?.Invoke(newState);
-    }
-
-    private void HandlePlayerTurn()
-    {
-    }
-
-    private void HandleBet()
-    {
-    }
-
-    private void HandleDeal()
-    {
-    }
-    
-    private void HandleStart()
-    {
-    }
-
-    private void HandleDealerTurn()
-    {
-    }
-
-    private void HandleBroke()
-    {
     }
 
     private void HandleLose()
@@ -126,5 +85,8 @@ public class BJGameManager : MonoBehaviour
         card.GetComponent<CardController>().SetCard(m_Decks[randomDeckSelector].GetRandomCardData());
         return card;
     }
+    
+    
+    
     
 }

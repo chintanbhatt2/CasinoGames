@@ -6,12 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/HighLow/HighLow.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/MainMenu.unity
+    guid: 46498c3016d122549aa75c920b9751a0
+  - enabled: 1
+    path: Assets/Scenes/Blackjack/BlackJackUI.unity
+    guid: 8a540d9d95e1dab4d8458a11d41f3fc8
   - enabled: 1
     path: Assets/Scenes/Blackjack/GameScene.unity
     guid: 10eeeb01e7ec8ad4b8ec58d36202df42
   - enabled: 1
-    path: Assets/Scenes/Blackjack/BlackJackUI.unity
-    guid: 8a540d9d95e1dab4d8458a11d41f3fc8
+    path: Assets/Scenes/HighLow/HighLowUI.unity
+    guid: 582041d717534f84d8ff22886f67c4f9
+  - enabled: 1
+    path: Assets/Scenes/HighLow/HighLow.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
