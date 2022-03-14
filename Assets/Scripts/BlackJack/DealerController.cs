@@ -15,6 +15,10 @@ public class  DealerController : Controller
         m_Cards.Clear();
     }
     
+    protected void OnDestroy()
+    {
+        BJGameManager.OnGameStateChange -= GameManagerStateChange;
+    }
     private new void GameManagerStateChange(BJGameManager.GameState state)
     {
         if (state == BJGameManager.GameState.Deal)
@@ -29,6 +33,7 @@ public class  DealerController : Controller
             DrawCard();
             DrawCard();
             m_Cards[0].gameObject.GetComponent<CardController>().MakeCardFaceDown();
+
         }
         
         else if (state == BJGameManager.GameState.DealerTurn)
@@ -36,50 +41,49 @@ public class  DealerController : Controller
             while (this.m_pointValue < 17)
             {
                 DrawCard();
-            }
+                if (this.m_pointValue == 21)
+                {
+                    BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
+                }
+                else if (this.m_pointValue > 21)
+                {
+                    foreach (GameObject card in m_Cards)
+                    {
+                        if (card.gameObject.GetComponent<CardController>().CardValue() == 11)
+                        {
+                            this.m_pointValue -= 10;
+                            card.gameObject.GetComponent<CardController>().UpdateCardValue(1);
+                        }
+                        else if (this.m_pointValue == 21)
+                        {
+                            BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Lose);
+                            return;
+                        }
 
-            if (this.m_pointValue == 21)
+                        if (this.m_pointValue < 21)
+                        {
+                            break;
+                        }
+                    }
+                    BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
+
+                }
+            }
+            
+            GameObject player = GameObject.Find("Player");
+            if (player.gameObject.GetComponent<PlayerController>().GetPointValue() < m_pointValue)
             {
                 BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Lose);
             }
-            
-            else if (this.m_pointValue > 21)
+            else if (player.gameObject.GetComponent<PlayerController>().GetPointValue() == m_pointValue)
             {
-                foreach (GameObject card in m_Cards)
-                {
-                    if (card.gameObject.GetComponent<CardController>().CardValue() == 11)
-                    {
-                        this.m_pointValue -= 10;
-                        card.gameObject.GetComponent<CardController>().UpdateCardValue(1);
-                    }
+                BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
+            }
+            else if(player.gameObject.GetComponent<PlayerController>().GetPointValue() > m_pointValue)
+            {
+                BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
+            }
 
-                    if (this.m_pointValue <= 21)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
-                    }
-                }
-            }
-            else
-            {
-                GameObject player = GameObject.Find("Player");
-                if (player.gameObject.GetComponent<PlayerController>().GetPointValue() < m_pointValue)
-                {
-                    BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Lose);
-                }
-                else if (player.gameObject.GetComponent<PlayerController>().GetPointValue() == m_pointValue)
-                {
-                    //TODO: Implement Game_Draw state, for now the player just wins
-                    BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
-                }
-                else if(player.gameObject.GetComponent<PlayerController>().GetPointValue() > m_pointValue)
-                {
-                    BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
-                }
-            }
         }
         
         else if (state == BJGameManager.GameState.Win || state == BJGameManager.GameState.Lose)

@@ -28,8 +28,55 @@ public class CardController : MonoBehaviour
     {
         data = cd;
         temporaryValue = data.CardNumber;
-        string fileName = "";
+        UpdateArtwork();
+    }
 
+    public void MakeCardFaceDown()
+    {
+        isFaceDown = true;
+        _spriteRenderer.sprite = Resources.Load<Sprite>("Textures/Cards/Back");
+    }
+
+    public void MakeCardFaceUp()
+    {
+        isFaceDown = false;
+        _spriteRenderer.sprite = Artwork;
+    }
+
+    public void FlipCard()
+    {
+        if (isFaceDown)
+        {
+            MakeCardFaceUp();
+        }
+        else
+        {
+            MakeCardFaceDown();
+        }
+    }
+
+    public int CardValue()
+    {
+        return temporaryValue;
+    }
+
+    public void UpdateCardValue(int newValue)
+    {
+        temporaryValue = newValue;
+    }
+
+    public void UpdateCardSuit(CardData.Suit suit)
+    {
+        data.CardSuit = suit;
+    }
+
+    public void UpdateArtwork()
+    {
+        data.CardNumber = temporaryValue;
+        Debug.Assert(data.CardNumber >= 1 && data.CardNumber <= 13);
+
+
+        string fileName = "";
         switch (data.CardSuit)
         {
             case CardData.Suit.Clubs:
@@ -67,47 +114,17 @@ public class CardController : MonoBehaviour
             default:
                 fileName += data.CardNumber.ToString();
                 break;
-
         }
 
         fileName = "Textures/Cards/" + fileName;
         Artwork = Resources.Load<Sprite>(fileName);
         _spriteRenderer.sprite = Artwork;
-        isFaceDown = false;
+        isFaceDown = false;        
     }
 
-    public void MakeCardFaceDown()
+    public CardData GetCardData()
     {
-        isFaceDown = true;
-        _spriteRenderer.sprite = Resources.Load<Sprite>("Textures/Cards/Back");
-    }
-
-    public void MakeCardFaceUp()
-    {
-        isFaceDown = false;
-        _spriteRenderer.sprite = Artwork;
-    }
-
-    public void FlipCard()
-    {
-        if (isFaceDown)
-        {
-            MakeCardFaceUp();
-        }
-        else
-        {
-            MakeCardFaceDown();
-        }
-    }
-
-    public int CardValue()
-    {
-        return temporaryValue;
-    }
-
-    public void UpdateCardValue(int newValue)
-    {
-        temporaryValue = newValue;
+        return new CardData(data.CardSuit, temporaryValue);
     }
 
 }

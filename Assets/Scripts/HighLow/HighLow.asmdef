@@ -1,0 +1,17 @@
+{
+    "name": "HighLow",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ba73c54727176d34494a013574ababa5",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
