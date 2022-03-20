@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour
     
     private void HandleDraw()
     {
-        for (int i = 0; i < GameManager.HandTotal; i++)
+        ClearHand();
+        for (int i = 0; i < GameManager.Instance.HandTotal; i++)
         {
             m_Cards.Add(GameManager.Instance.GetCardFromDeck());
             m_Cards[m_Cards.Count-1].transform.SetParent(this.transform);
@@ -49,17 +50,37 @@ public class PlayerController : MonoBehaviour
 
     private void HandleRefill()
     {
-        for (int i = 0; i < GameManager.HandTotal; i++)
+
+        for (int i = 0; i < m_Cards.Count; i++)
         {
             if (m_Cards[i] == null)
             {
-                m_Cards[i] = GameManager.Instance.GetCardFromDeck();
-                m_Cards[i].transform.SetParent(this.transform);
-                Vector3 newPosition = m_Cards[m_Cards.Count - 1].transform.position;
-                newPosition.z -= 1;
-                m_Cards[m_Cards.Count - 1].transform.position = newPosition;
+                m_Cards.RemoveAt(i);
+                i--;
             }
         }
+
+        while (m_Cards.Count < GameManager.Instance.HandMax)
+        {
+            GameObject newCard = GameManager.Instance.GetCardFromDeck();
+            newCard.transform.SetParent(this.transform);
+            Vector3 newPosition = newCard.transform.position;
+            newPosition.z -= 1;
+            newCard.transform.position = newPosition;
+            m_Cards.Add(newCard);
+        }
+        
+        // for (int i = 0; i < GameManager.Instance.HandMax; i++)
+        // {
+        //     if (m_Cards[i] != null)
+        //     {
+        //         m_Cards[i] = GameManager.Instance.GetCardFromDeck();
+        //         m_Cards[i].transform.SetParent(this.transform);
+        //         Vector3 newPosition = m_Cards[i].transform.position;
+        //         newPosition.z -= 1;
+        //         m_Cards[i].transform.position = newPosition;
+        //     }
+        // }
     }
 
     public List<CardData> GetCardData()
@@ -72,6 +93,16 @@ public class PlayerController : MonoBehaviour
         }
 
         return returnCards;
+    }
+
+
+    public void ClearHand()
+    {
+        foreach (GameObject card in m_Cards)
+        {
+            Destroy(card);
+        }
+        m_Cards.Clear();
     }
 
 }

@@ -33,29 +33,30 @@ public class DealerController : MonoBehaviour
     
     private void HandleDraw()
     {
-        for (int i = 0; i < GameManager.HandTotal; i++)
+        ClearHand();
+        for (int i = 0; i < GameManager.Instance.HandMax; i++)
         {
             m_Cards.Add(GameManager.Instance.GetCardFromDeck());
             m_Cards[m_Cards.Count-1].transform.SetParent(this.transform);
             Vector3 newPosition = m_Cards[m_Cards.Count - 1].transform.position;
             newPosition.z -= 1;
             m_Cards[m_Cards.Count - 1].transform.position = newPosition;
+            // m_Cards[m_Cards.Count -1].GetComponent<CardController>().MakeCardFaceDown();
         }
     }
 
     private void HandleRefill()
     {
-        for (int i = 0; i < GameManager.HandTotal; i++)
+        return;
+    }
+    
+    public void ClearHand()
+    {
+        foreach (GameObject card in m_Cards)
         {
-            if (m_Cards[i] == null)
-            {
-                m_Cards[i] = GameManager.Instance.GetCardFromDeck();
-                m_Cards[i].transform.SetParent(this.transform);
-                Vector3 newPosition = m_Cards[m_Cards.Count - 1].transform.position;
-                newPosition.z -= 1;
-                m_Cards[m_Cards.Count - 1].transform.position = newPosition;
-            }
+            Destroy(card);
         }
+        m_Cards.Clear();
     }
     
     

@@ -7,6 +7,7 @@ using UnityEngine;
 /// Class that contains basic data about a card (Suit, and card number). Face cards are represented numerically (i.e. 12, 13, 14)
 /// </summary>
 
+[System.Serializable]
 public class CardData
 {
     public enum Suit
