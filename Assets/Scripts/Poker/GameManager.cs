@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
         Start,
         Play,
         Draw,
+        Refill,
         Compare,
         End,
     }
 
+    public static int HandTotal = 5;
     public static event Action<GameState> OnGameStateChange;
 
     public static GameManager Instance;
@@ -27,7 +29,6 @@ public class GameManager : MonoBehaviour
     public int ShoeSize;
 
     private List<CardDeck> m_Decks = new List<CardDeck>();
-    
     
     public void Awake()
     {
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
     {
         switch (state)
         {
-
+            
         }
     }
     
@@ -73,6 +74,20 @@ public class GameManager : MonoBehaviour
         GameObject card = Instantiate(CardPrefab);
         card.GetComponent<CardController>().SetCard(m_Decks[randomDeck].GetRandomCardData());
         return card;
+    }
+
+    public void HandleCompare()
+    {
+        GameObject Player = GameObject.Find("Player");
+        GameObject Dealer = GameObject.Find("Dealer");
+
+
+        List<CardData> PlayerCards = Player.GetComponent<PlayerController>().GetCardData();
+        List<CardData> DealerCards = Dealer.GetComponent<DealerController>().GetCardData();
+        
+        
+        
+        
     }
     
 }
