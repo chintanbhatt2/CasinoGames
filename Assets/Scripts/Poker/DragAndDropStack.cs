@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+
+
 /// <summary>
-/// Simple drag and drop script for gameobjects
+/// Extends DragAndDrop to include snapping onto objects
 /// </summary>
-public class DraqAndDrop : MonoBehaviour
+
+public class DragAndDropStack : MonoBehaviour
 {
 
     private Vector3 _dragOffset;
@@ -31,6 +36,7 @@ public class DraqAndDrop : MonoBehaviour
         {
             transform.position = _snappedObject.transform.position;
             transform.localPosition -= new Vector3(0, 0, 1);
+            Destroy(this.gameObject);
         }
         else
         {
@@ -49,6 +55,28 @@ public class DraqAndDrop : MonoBehaviour
         Vector3 mousePos = _camera.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         return mousePos;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(this.gameObject.name + " colliding with " + collision.gameObject.name);
+
+        if (collision.gameObject.tag == "Snapables")
+        {
+            _isSnapped = true;
+            _snappedObject = collision.gameObject;
+        }
+        else
+        {
+            _isSnapped = false;
+            _snappedObject = null;
+        }
+    }
+    
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        _isSnapped = false;
+        _snappedObject = null;
     }
 
 }

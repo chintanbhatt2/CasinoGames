@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
-    private CardData data;
+    public CardData data;
     
     public Sprite Artwork;
     private SpriteRenderer _spriteRenderer;

@@ -15,7 +15,7 @@ public class  DealerController : Controller
         m_Cards.Clear();
     }
     
-    protected void OnDestroy()
+    protected new void OnDestroy()
     {
         BJGameManager.OnGameStateChange -= GameManagerStateChange;
     }

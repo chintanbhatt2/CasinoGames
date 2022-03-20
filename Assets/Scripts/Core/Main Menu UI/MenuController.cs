@@ -18,11 +18,12 @@ public class MenuController : MonoBehaviour
 
     public void OnClickPoker()
     {
-        
+        SceneManager.LoadScene("Scenes/Poker/Poker", LoadSceneMode.Single);
     }
 
     public void OnClickPokerSeven()
     {
+        SceneManager.LoadScene("Scenes/Poker/Poker7", LoadSceneMode.Single);
         
     }
 }

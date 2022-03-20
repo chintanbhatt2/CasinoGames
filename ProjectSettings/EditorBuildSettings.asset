@@ -20,4 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HighLow/HighLow.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Poker/Poker.unity
+    guid: 8535357fee42407489eb8f09abe719d5
+  - enabled: 1
+    path: Assets/Scenes/Poker/Poker7.unity
+    guid: a88a6bbff999981448d319abd7a209ea
+  - enabled: 1
+    path: Assets/Scenes/Poker/PokerUI.unity
+    guid: 695e2849d149d59429aaa97318e2aab7
   m_configObjects: {}
