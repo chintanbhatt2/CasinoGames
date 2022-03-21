@@ -26,8 +26,21 @@ public class DealerController : MonoBehaviour
             case GameManager.GameState.Refill:
                 HandleRefill();
                 break;
+            case GameManager.GameState.Win:
+            case GameManager.GameState.Lose:
+                HandleWinLoss();
+                break;
             default:
                 break;
+        }
+    }
+
+
+    private void HandleWinLoss()
+    {
+        foreach (GameObject card in m_Cards)
+        {
+            card.GetComponent<CardController>().MakeCardFaceUp();
         }
     }
     
@@ -43,6 +56,12 @@ public class DealerController : MonoBehaviour
             m_Cards[m_Cards.Count - 1].transform.position = newPosition;
             // m_Cards[m_Cards.Count -1].GetComponent<CardController>().MakeCardFaceDown();
         }
+
+        foreach (GameObject card in m_Cards)
+        {
+            card.GetComponent<CardController>().MakeCardFaceDown();
+        }
+        
     }
 
     private void HandleRefill()
