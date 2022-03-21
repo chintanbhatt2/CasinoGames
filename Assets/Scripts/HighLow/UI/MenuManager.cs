@@ -54,6 +54,13 @@ public class MenuManager : MonoBehaviour
     }
 
 
+    public void OnClickBet()
+    {
+        GameManager.Instance.Pot += 20;
+        BankUIController.Instance.UpdateMoney(-20);
+
+    }
+    
     public void OnClickMainMenu()
     {
         SceneManager.LoadScene("Scenes/MainMenu", LoadSceneMode.Single);

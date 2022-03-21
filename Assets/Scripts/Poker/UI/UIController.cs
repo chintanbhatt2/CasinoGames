@@ -64,6 +64,8 @@ public class UIController : MonoBehaviour
 
     public void OnBetClick()
     {
+        BankUIController.Instance.UpdateMoney(-20);
+        GameManager.Instance.Pot += 20;
         if (GameManager.Instance.State == GameManager.GameState.Refill)
         {
             GameManager.Instance.UpdateGameState(GameManager.GameState.Compare);

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
         Win,
         Lose,
         End,
+        ResultDraw,
     }
 
     public enum Hands
@@ -42,6 +43,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public int HandTotal = 5;
 
     [SerializeField] public int HandMax = 5;
+
+    public int Pot = 0; 
     public static event Action<GameState> OnGameStateChange;
 
     public static GameManager Instance;
@@ -64,11 +67,12 @@ public class GameManager : MonoBehaviour
         }
         GameManager.OnGameStateChange += StateChange;
         SceneManager.LoadScene("Scenes/Poker/PokerUI", LoadSceneMode.Additive);
-
+        SceneManager.LoadScene("BankOverlay", LoadSceneMode.Additive);
     }
 
     public void Start()
     {
+        Pot = 0;
         Instance.UpdateGameState(GameState.Start);
         for (int i = 0; i < ShoeSize; i++)
         {
@@ -124,6 +128,7 @@ public class GameManager : MonoBehaviour
 
     public void HandleWin()
     {
+        BankUIController.Instance.UpdateMoney(Pot);
         Debug.Log("You Win!");
     }
 
@@ -195,6 +200,8 @@ public class GameManager : MonoBehaviour
 
     private void HandleDraw()
     {
+        Pot = 20;
+        BankUIController.Instance.UpdateMoney(-20);
     }
 
     private HandData CheckHands(List<CardData> Cards)
