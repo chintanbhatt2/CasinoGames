@@ -77,7 +77,7 @@ public class  DealerController : Controller
             }
             else if (player.gameObject.GetComponent<PlayerController>().GetPointValue() == m_pointValue)
             {
-                BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Win);
+                BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Draw);
             }
             else if(player.gameObject.GetComponent<PlayerController>().GetPointValue() > m_pointValue)
             {

@@ -26,6 +26,14 @@ public class PlayGameUIController : MonoBehaviour
     {
         BJGameManager.Instance.UpdateGameState(BJGameManager.GameState.Lose);
     }
+
+    public void OnClickBet()
+    {
+        if (BankUIController.Instance.MoneyData.Money < 20) return;
+        
+        BankUIController.Instance.UpdateMoney(-20);
+        BJGameManager.Instance.Pot += 20;
+    }
     
 
     

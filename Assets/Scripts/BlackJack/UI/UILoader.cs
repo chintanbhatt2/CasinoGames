@@ -28,6 +28,11 @@ public class UILoader : MonoBehaviour
             {
                 SceneManager.LoadSceneAsync("BlackJackUI", LoadSceneMode.Additive);
             }
+
+            if (SceneManager.GetSceneByName("BankOverlay").isLoaded == false)
+            {
+                SceneManager.LoadSceneAsync("BankOverlay", LoadSceneMode.Additive);
+            }
         }
     }
 }

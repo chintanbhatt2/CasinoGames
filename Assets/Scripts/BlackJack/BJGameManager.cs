@@ -18,6 +18,9 @@ public class BJGameManager : MonoBehaviour
     public static BJGameManager Instance;
     
     public int ShoeCount;
+
+    public int Pot = 0;
+    
     private List<CardDeck> m_Decks = new List<CardDeck>();
     public GameState State;
     [SerializeField] private GameObject CardPrefab;
@@ -30,6 +33,7 @@ public class BJGameManager : MonoBehaviour
         DealerTurn,
         Win,
         Lose,
+        Draw,
     }
 
     public void Awake()
@@ -44,6 +48,8 @@ public class BJGameManager : MonoBehaviour
             ShoeCount = 4;
         }
 
+        Pot = 0;
+
         for (int i = 0; i < ShoeCount; i++)
         {
             m_Decks.Add(new CardDeck());
@@ -57,8 +63,14 @@ public class BJGameManager : MonoBehaviour
         State = newState;
         switch (newState)
         {
+            case GameState.Deal:
+                HandleDeal();
+                break;
             case GameState.Lose:
                 HandleLose();
+                break;
+            case GameState.Draw:
+                HandleDraw();
                 break;
             case GameState.Win:
                 HandleWin();
@@ -68,13 +80,25 @@ public class BJGameManager : MonoBehaviour
         OnGameStateChange?.Invoke(newState);
     }
 
+    private void HandleDeal()
+    {
+        Pot = 20;
+        BankUIController.Instance.UpdateMoney(-20);
+    }
+    
     private void HandleLose()
     {
         Debug.Log("You Lose!");
     }
 
+    private void HandleDraw()
+    {
+        BankUIController.Instance.UpdateMoney(Pot/2);
+    }
+    
     private void HandleWin()
     {
+        BankUIController.Instance.UpdateMoney(Pot);
         Debug.Log("You Win!");
     }
 
