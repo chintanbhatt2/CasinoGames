@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
         End,
     }
 
+    public int Pot = 0;
+
     public static event Action<GameState> OnGameStateChange;
 
     public static GameManager Instance;
@@ -45,12 +47,14 @@ public class GameManager : MonoBehaviour
             m_Cards.Add(new CardData(randomSuit, i));
         }
         SceneManager.LoadScene("Scenes/HighLow/HighLowUI", LoadSceneMode.Additive);
+        SceneManager.LoadScene("BankOverlay", LoadSceneMode.Additive);
 
     }
 
     public void Start()
     {
         RoundCount = 0;
+        Pot = 0;
         Instance.UpdateGameState(GameState.Start);
     }
 
@@ -64,13 +68,31 @@ public class GameManager : MonoBehaviour
             case GameState.Win:
                 HandleWin();
                 break;    
+            case GameState.Play:
+                HandlePlay();
+                break;
+            case GameState.Start:
+                HandleStart();
+                break;
         }
     }
 
+    private void HandlePlay()
+    {
+        BankUIController.Instance.UpdateMoney(-20);
+        Pot += 20;
+    }
+
+    private void HandleStart()
+    {
+        Pot = 0;
+    }
+    
     private void HandleLoss()
     {
         //Remove money from player's bank
         Debug.Log("You lose!");
+        Pot = 0;
         if (RoundCount >= MaximumRounds)
         {
             RoundCount = 0;
@@ -86,7 +108,9 @@ public class GameManager : MonoBehaviour
     {
         //Add money to player's bank
         Debug.Log("You win!");
-
+        BankUIController.Instance.UpdateMoney(Pot);
+        
+        Pot = 0;
         if (RoundCount >= MaximumRounds)
         {
             RoundCount = 0;
